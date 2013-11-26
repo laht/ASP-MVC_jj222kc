@@ -77,6 +77,8 @@ namespace NumberGuessingGame.Models
             {
                 if (guess == GuessedNumbers[i].Number)
                 {
+                    _lastGuessedNumber.Number = guess;
+                    _lastGuessedNumber.Outcome = Outcome.OldGuess;
                     return Outcome.OldGuess;
                 }
             }
