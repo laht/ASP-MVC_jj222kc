@@ -1,0 +1,29 @@
+﻿@model NumberGuessingGame.ViewModels.SecrectNumberViewModel
+
+@using (Html.BeginForm())
+{
+    if (!Model.CanMakeGuess)
+    {   
+        <div id="guessInput">
+            <h2>Slut på gissningar!</h2>
+            @Html.TextBoxFor(m => m.Guess, new { @Value = "", @Disabled="disabled" })
+            @Html.ValidationMessageFor(m => m.Guess)
+            @Html.Partial("newGameView", Model)
+            <h3>@Model.GuessResult()</h3>            
+        </div>
+    }
+    else
+    {
+        <div id="guessInput">
+            <h2>@Model.GetCurrentGuessString()</h2>
+            Gissa på ett tal mellan 1 och 100
+            @Html.TextBoxFor(m => m.Guess, new { @Value = "" })            
+            <input type="submit" value="Gissa" />
+            <div id="errorMessage">
+                @Html.ValidationMessageFor(m => m.Guess)
+                @Html.ValidationSummary(true, "Du har inte fyllt i formuläret korrekt")
+            </div>
+            <h3>@Model.GuessResult()</h3>
+        </div>
+    }
+}

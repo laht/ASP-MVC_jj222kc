@@ -12,6 +12,7 @@ namespace NumberGuessingGame.Models
         private int? _number;
         public const int MaxNumberOfGuesses = 7;
 
+        //Bool to see if it is possible to make a guess
         public bool CanMakeGuess
         {
             get
@@ -30,6 +31,7 @@ namespace NumberGuessingGame.Models
                 }
             }
         }
+        //Returns the amount of guesses made
         public int Count
         {
             get
@@ -37,6 +39,7 @@ namespace NumberGuessingGame.Models
                 return _guessedNumbers.Count;
             }
         }
+        //IList containing all guesses made
         public IList<GuessedNumber> GuessedNumbers 
         {
             get
@@ -44,6 +47,7 @@ namespace NumberGuessingGame.Models
                 return _guessedNumbers.AsReadOnly();
             }
         }
+        //GuessedNumber representing the last guessed made
         public GuessedNumber LastGuessedNumber 
         { 
             get
@@ -51,6 +55,7 @@ namespace NumberGuessingGame.Models
                 return _lastGuessedNumber;
             }
         }
+        //Nullable int representing the secrect number
         public int? Number 
         {
             get 
@@ -66,6 +71,8 @@ namespace NumberGuessingGame.Models
             }
             private set { }
         }
+
+        //Method to make a guess and set LastGuessedNumber and add a guess to the list
         public Outcome MakeGuess(int guess) 
         {
             if (guess < 1 || guess > 100)
@@ -107,6 +114,7 @@ namespace NumberGuessingGame.Models
             }
         }
 
+        //Method that adds a guess to the IList _guessedNumbers
         private void addGuess(Outcome outcome, int guess) 
         {
                 _lastGuessedNumber.Number = guess;
@@ -114,6 +122,7 @@ namespace NumberGuessingGame.Models
                 _guessedNumbers.Add(_lastGuessedNumber);                
         }
 
+        //Initialize secrect number and clear the IList _guessedNumbers and set _lastGuessedNumber to null
         public void Initialize()
         {
             _number = new Random().Next(1, 100);

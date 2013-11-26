@@ -1,0 +1,20 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Sessionen tog slut";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SessionEndedView</title>
+</head>
+<body>
+    <div>
+        <h2>Spelomgången kunde inte fullföjas</h2>
+        Du väntade för länge med att gissa varför spelomgången inte kunde fullföljas
+        @Html.Partial("newGameView")
+    </div>
+</body>
+</html>

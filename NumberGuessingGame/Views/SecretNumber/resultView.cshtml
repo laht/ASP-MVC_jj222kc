@@ -1,0 +1,39 @@
+﻿@model NumberGuessingGame.ViewModels.SecrectNumberViewModel
+@using NumberGuessingGame.Models
+
+<section id="guessResults">
+    @try
+    {
+        if (Model.GuessedNumbers.Count > 0)
+        {
+            foreach (var item in Model.GuessedNumbers)
+            {
+                if (item.Outcome == Outcome.High)
+                {
+                    <p>
+                        Gissning @Model.GetCurrentGuess(Model.GuessedNumbers.IndexOf(item))
+                        @item.Number är högt                      
+                    </p>
+                }
+                else if (item.Outcome == Outcome.Low)
+                {
+                    <p>
+                        Gissning @Model.GetCurrentGuess(Model.GuessedNumbers.IndexOf(item))
+                        @item.Number är lågt!
+                    </p>
+                }
+                else if (item.Outcome == Outcome.Right)
+                {
+                    <p>
+                        Gissning @Model.GetCurrentGuess(Model.GuessedNumbers.IndexOf(item))
+                        @item.Number är rätt!
+                    </p>
+                }
+            }
+        }
+        }
+        catch (Exception)
+        {
+            //eat
+        }
+</section>

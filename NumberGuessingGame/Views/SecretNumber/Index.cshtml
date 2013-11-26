@@ -2,35 +2,26 @@
 
 @{
     Layout = null;
-    ViewBag.Title = "Testing testing";
+    ViewBag.Title = "Asp.net MVC Lab 1";
 }
 
 <!DOCTYPE html>
 
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Styles/reset.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Styles/style.css")">
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <title>@ViewBag.Title</title>    
 </head>
 <body>
     <div id="main">
        <header>
           <h1>Gissa det hemliga talet</h1>
        </header>
-       @using (Html.BeginForm())
-       {          
-            <div id="guessInput">
-                Gissa på ett tal mellan 1 och 100
-                @Html.TextBoxFor(m => m.Guess)
-                @Html.ValidationMessageFor(m => m.Guess)
-                <input type="submit" value="Gissa" />
-            </div>
-        }              
         
-        @for (int i = 0; i < Model.GuessedNumbers.Count; i++)
-        {
-            Model.GuessedNumbers[i].Number.ToString();
-        }
+        @Html.Partial("guessView", Model)
+        @Html.Partial("resultView", Model)
         
     </div>
 </body>

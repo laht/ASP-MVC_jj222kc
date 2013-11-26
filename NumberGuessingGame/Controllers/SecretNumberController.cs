@@ -10,26 +10,32 @@ namespace NumberGuessingGame.Controllers
 {
     public class SecretNumberController : Controller
     {
+        private const string SECRETNUMBER = "SecretNumberModel";
 
-        private SecretNumber _secretNumber = new SecretNumber();      
-        
         //
         // GET: /SecretNumber/
 
         [HttpGet]
         public ActionResult Index()
         {
-            if (Session["SecretNumberModel"] == null)
+            //Create session object if null
+            if (Session[SECRETNUMBER] == null)
             {
-                Session["SecretNumberModel"] = new SecretNumber();
+                Session[SECRETNUMBER] = new SecretNumber();
             }
+            //Get the secrectNumber model
+            var secretNumber = (SecretNumber)Session[SECRETNUMBER];
+            
+            //Create a viewModel
+            var viewModel = new SecrectNumberViewModel();
 
-            var secretNumber = (SecretNumber)Session["SecretNumberModel"];
-            var SecrectNumberViewModel = new SecrectNumberViewModel();
-            SecrectNumberViewModel.GuessedNumbers = secretNumber.GuessedNumbers.ToList();
-            SecrectNumberViewModel.Number = secretNumber.Number;
-            SecrectNumberViewModel.CanMakeGuess = secretNumber.CanMakeGuess;
-            return View(SecrectNumberViewModel);
+            //Set viewModel properties to match the model
+            viewModel.Number = secretNumber.Number;
+            viewModel.Lastguess = secretNumber.LastGuessedNumber;
+            viewModel.GuessedNumbers = secretNumber.GuessedNumbers;
+            viewModel.CanMakeGuess = secretNumber.CanMakeGuess;
+
+            return View(viewModel);
         }
 
         //
@@ -38,14 +44,35 @@ namespace NumberGuessingGame.Controllers
         [HttpPost]
         public ActionResult Index(SecrectNumberViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {                
-                var secretNumber = (SecretNumber)Session["SecretNumberModel"];
-                secretNumber.MakeGuess(viewModel.Guess);
-                viewModel.Lastguess = secretNumber.LastGuessedNumber;
-                viewModel.GuessedNumbers = secretNumber.GuessedNumbers.ToList();                                
+            if (Session.IsNewSession)
+            {
+                return View("SessionEndedView");
             }
+
+            var secretNumber = (SecretNumber)Session[SECRETNUMBER];
+
+            //If user has entered valid data make a guess
+            if (ModelState.IsValid)
+            {
+                //make guess with user input
+                secretNumber.MakeGuess(viewModel.Guess);
+            }
+
+            //Set viewModel properties to match the model
+            viewModel.Number = secretNumber.Number;
+            viewModel.Lastguess = secretNumber.LastGuessedNumber;
+            viewModel.GuessedNumbers = secretNumber.GuessedNumbers;
+            viewModel.CanMakeGuess = secretNumber.CanMakeGuess;
+
             return View(viewModel);
+        }
+
+        //Start new game
+        [HttpGet]
+        public RedirectResult newGame() 
+        {
+            Session[SECRETNUMBER] = null;
+            return Redirect("~/");
         }
 
     }
